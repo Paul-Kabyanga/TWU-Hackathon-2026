@@ -12,3 +12,4 @@ class ChessPlayer:
 
     def make_move(self, board):
         pass
+#print hello    

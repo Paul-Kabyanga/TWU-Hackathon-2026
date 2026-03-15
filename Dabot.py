@@ -44,6 +44,8 @@ class Dabot(ChessPlayer):
         if not legal_moves:
             return None
 
+        piece_values = {1: 100, 2: 320, 3: 330, 4: 500, 5: 900, 6: 0}
+
         safemoves = []
         captures = [m for m in legal_moves if board.is_capture(m)]
         fin = []
@@ -62,11 +64,14 @@ class Dabot(ChessPlayer):
         if safemoves:
             safe_captures = [m for m in safemoves if m in captures]
             if safe_captures:
-                fin.extend(safe_captures)
+                safe_captures.sort(
+                    key=lambda m: piece_values.get(board.piece_type_at(m.to_square), 0),
+                    reverse=True
+                )
+                return safe_captures[0]
             else:
                 fin.extend(safemoves)
-
-            return random.choice(fin)
+                return random.choice(fin)
         else:
             return random.choice(legal_moves)
 
